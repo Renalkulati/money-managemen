@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#111b1b">
+  <title>MONEY MANAGEMEN</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111b1b;
+      --surface: #182625;
+      --surface-2: #213331;
+      --ink: #f1f5ee;
+      --muted: #b6c4bf;
+      --line: #304542;
+      --primary: #68c4ad;
+      --primary-2: #8ad8c4;
+      --accent: #f47e63;
+      --positive: #42c8a4;
+      --negative: #ff7468;
+      --chart-blue: #4d86c7;
+      --shadow: 0 14px 32px rgba(0, 0, 0, .22);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
+    body {
+      margin: 0; min-width: 320px; background: radial-gradient(circle at 8% 0%, rgba(240,123,95,.10), transparent 28rem), var(--bg); color: var(--ink);
+      font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; }
+    .app-shell { width: min(100%, 1080px); max-width: 100%; margin: auto; padding: 22px 18px 40px; }
+    .topbar { position: relative; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { width: 44px; height: 44px; display: grid; place-items: center; color: #fff; border-radius: 14px; background: var(--primary); box-shadow: 0 8px 18px rgba(31,77,69,.20); font-weight: 900; }
+    .brand h1 { color: var(--ink); font-size: 16px; letter-spacing: .08em; margin: 0; font-weight: 850; }
+    .brand p { color: var(--muted); font-size: 12px; margin: 2px 0 0; }
+    .topbar-tools { position: absolute; right: 0; display: flex; align-items: center; gap: 9px; }
+    .notification-wrap { position: relative; }
+    .notification-button { position: relative; width: 42px; height: 42px; display: grid; place-items: center; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow); font-size: 19px; }
+    .notification-badge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; display: grid; place-items: center; padding: 0 4px; color: #fff; background: var(--accent); border: 2px solid var(--bg); border-radius: 99px; font-size: 10px; font-weight: 850; }
+    .notification-panel { position: absolute; top: calc(100% + 10px); right: 0; z-index: 15; width: min(330px, calc(100vw - 32px)); padding: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 45px rgba(0,0,0,.26); }
+    .notification-panel[hidden] { display: none; }
+    .notification-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+    .notification-head strong { font-size: 14px; }
+    .notification-head span { color: var(--muted); font-size: 11px; }
+    .notification-list { display: grid; gap: 4px; max-height: 310px; overflow-y: auto; margin-top: 8px; }
+    .notification-item { display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 9px; padding: 9px 5px; border-radius: 10px; }
+    .notification-item:hover { background: var(--surface-2); }
+    .notification-icon { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px; background: var(--surface-2); }
+    .notification-title { color: var(--ink); font-size: 12px; font-weight: 750; }
+    .notification-meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
+    .notification-empty { color: var(--muted); padding: 18px 4px 10px; text-align: center; font-size: 12px; }
+    .hero { position: relative; overflow: visible; border-radius: 24px; padding: 26px; color: #fff; background: #193b3a; box-shadow: 0 18px 38px rgba(25,59,58,.20); margin-bottom: 18px; }
+    .hero::after { content: ""; position: absolute; width: 230px; height: 230px; right: -85px; top: -105px; border-radius: 50%; background: rgba(240,123,95,.27); }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-top { position: relative; z-index: 3; display: flex; justify-content: center; align-items: center; gap: 26px; min-width: 0; text-align: left; }
+    .eyebrow { margin: 0 0 5px; color: #d7e5df; font-size: 14px; font-weight: 500; }
+    .balance { color: #fff; font-size: clamp(31px, 7vw, 50px); line-height: 1.1; margin: 0; letter-spacing: -.05em; font-weight: 850; }
+    .hero-note { color: #d7e5df; margin: 8px 0 0; font-size: 14px; font-weight: 500; }
+    .wallet-switcher { position: relative; min-width: 190px; max-width: 230px; }
+    .wallet-picker { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.32); padding: 11px 13px; border-radius: 14px; font-weight: 700; text-align: left; }
+    .wallet-picker:hover { background: rgba(255,255,255,.22); }
+    .wallet-picker-chevron { opacity: .8; font-size: 16px; }
+    .wallet-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 12; width: min(280px, calc(100vw - 32px)); padding: 8px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 45px rgba(0,0,0,.28); }
+    .wallet-menu[hidden] { display: none; }
+    .wallet-option { width: 100%; display: grid; grid-template-columns: 34px minmax(0,1fr) auto; gap: 9px; align-items: center; padding: 10px; color: var(--ink); background: transparent; border: 1px solid transparent; border-radius: 12px; text-align: left; }
+    .wallet-option:hover, .wallet-option.active { background: var(--surface-2); border-color: var(--line); }
+    .wallet-option-emoji { font-size: 21px; }
+    .wallet-option-name { font-size: 12px; font-weight: 800; }
+    .wallet-option-balance { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .wallet-option-check { color: var(--positive); font-weight: 900; }
+    .quick-actions { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 620px; margin: 24px auto 0; }
+    .quick-actions button { padding: 13px 8px; border-radius: 12px; background: rgba(255,255,255,.10); color: #fff; border: 1px solid rgba(255,255,255,.18); font-weight: 700; transition: .2s ease; }
+    .quick-actions button:first-child { background: var(--accent); border-color: var(--accent); }
+    .quick-actions button:hover { transform: translateY(-2px); background: rgba(255,255,255,.22); }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
+    .stat-card, .panel, .wallet-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .stat-card { padding: 18px; text-align: left; transition: transform .2s ease, box-shadow .2s ease; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 18px 36px rgba(24,45,42,.12); }
+    .stat-label { color: #bfd0ca; font-size: 13px; margin: 0 0 8px; font-weight: 500; }
+    .stat-value { color: var(--ink); font-size: 18px; font-weight: 850; margin: 0; }
+    .positive { color: var(--positive); } .negative { color: var(--negative); }
+    .content-grid { display: grid; gap: 18px; min-width: 0; }
+    .content-grid > *, .stats-grid > * { min-width: 0; }
+    .panel { min-width: 0; padding: 20px; overflow: hidden; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; text-align: left; }
+    .panel h2 { color: var(--ink); font-size: 17px; margin: 0; font-weight: 850; }
+    .panel-subtitle { color: #aebfba; font-size: 13px; margin: 3px 0 0; font-weight: 450; }
+    .text-button { color: var(--primary); background: transparent; padding: 7px 10px; border-radius: 9px; font-weight: 800; }
+    .text-button:hover { background: var(--surface-2); }
+    .chart-wrap { min-width: 0; min-height: 240px; display: grid; place-items: center; }
+    svg { max-width: 100%; }
+    .donut-layout { display: grid; grid-template-columns: minmax(132px, 158px) minmax(0, 1fr); align-items: center; gap: 16px; width: 100%; }
+    .donut { width: 158px; height: 158px; transform: rotate(-90deg); }
+    .donut circle { fill: none; stroke-width: 22; stroke-linecap: round; }
+    .donut-track { stroke: var(--surface-2); }
+    .donut-center { font-size: 11px; font-weight: 800; fill: var(--ink); transform: rotate(90deg); transform-origin: center; }
+    .legend { display: grid; gap: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+    .legend-item strong { margin-left: auto; font-size: 11px; }
+    .bar-chart { display: block; width: 100%; height: auto; min-height: 210px; aspect-ratio: 600 / 240; }
+    .bar-chart text { fill: var(--muted); font-size: 10px; }
+    .bar-chart .value-label { fill: var(--ink); font-size: 9px; font-weight: 700; }
+    .bar-chart .grid-line { stroke: var(--line); stroke-dasharray: 3 5; }
+    .wallet-list { display: grid; gap: 10px; }
+    .wallet-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px; background: var(--surface-2); border-radius: 14px; border: 1px solid transparent; }
+    .wallet-row:hover { border-color: var(--line); background: var(--surface); }
+    .wallet-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .wallet-emoji { font-size: 25px; }     .wallet-name { color: var(--ink); font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wallet-balance { font-weight: 800; font-size: 13px; text-align: right; white-space: nowrap; }
+    .wallet-actions { display: flex; gap: 4px; }
+    .mini-button { background: transparent; color: var(--muted); padding: 5px; border-radius: 8px; }
+    .mini-button:hover { background: var(--surface); color: var(--primary); }
+    .goal { padding: 17px; border-radius: 15px; background: linear-gradient(135deg, rgba(31,77,69,.11), rgba(240,123,95,.14)); border: 1px solid rgba(31,77,69,.10); }
+    .goal-top { display: flex; justify-content: space-between; gap: 12px; }
+    .goal-title { color: var(--ink); font-weight: 850; margin: 0; } .goal-meta { color: #aebfba; font-size: 12px; margin: 3px 0 0; }
+    .progress { height: 10px; background: var(--surface-2); border-radius: 99px; overflow: hidden; margin: 14px 0 8px; }
+    .progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+    .goal-foot { display: flex; justify-content: space-between; color: #aebfba; font-size: 12px; }
+    .transaction-list { display: grid; gap: 8px; }
+    .transaction-row { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto 30px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .transaction-row:last-child { border-bottom: 0; }
+    .transaction-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: var(--surface-2); color: var(--primary); font-weight: 800; }
+    .transaction-title { color: var(--ink); font-weight: 750; font-size: 13px; } .transaction-meta { color: #aebfba; font-size: 11px; margin-top: 2px; }
+    .transaction-amount { font-size: 13px; font-weight: 850; white-space: nowrap; }
+    .empty { color: var(--muted); padding: 25px 8px; text-align: center; }
+    .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .field, .field select, .field input, .field textarea { width: 100%; }
+    .field { display: grid; gap: 6px; margin-bottom: 14px; }
+    .field label { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .field input, .field select, .field textarea { color: var(--ink); background: var(--surface-2); border: 1px solid transparent; border-radius: 12px; padding: 12px; outline: none; }
+    .field textarea { min-height: 76px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,91,255,.12); }
+    .modal-backdrop { position: fixed; inset: 0; display: none; align-items: flex-end; justify-content: center; padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); background: rgba(16,19,38,.56); z-index: 20; }
+    .modal-backdrop.open { display: flex; }
+    .modal { width: min(100%, 520px); max-height: min(92dvh, 760px); overflow: auto; background: var(--surface); border-radius: 22px; padding: 20px; box-shadow: 0 20px 70px rgba(0,0,0,.25); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .modal h2 { margin: 0; font-size: 19px; }
+    .close-button { color: var(--muted); background: transparent; font-size: 24px; line-height: 1; }
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+    .button { border-radius: 12px; padding: 11px 15px; font-weight: 800; }
+    .button.primary { color: #fff; background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+    .button.secondary { color: var(--ink); background: var(--surface-2); }
+    .toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 40; color: #fff; background: #202640; border-radius: 12px; padding: 11px 16px; box-shadow: var(--shadow); transition: .2s ease; }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    @media (max-width: 479px) {
+      .app-shell { padding: 16px 12px 28px; }
+      .topbar { margin-bottom: 18px; }
+      .brand { gap: 9px; }
+      .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
+      .brand h1 { font-size: 13px; letter-spacing: .06em; }
+      .brand p { font-size: 10px; }
+      .icon-button { width: 38px; height: 38px; }
+      .hero { padding: 20px 16px; border-radius: 20px; }
+      .hero-top { flex-direction: column; gap: 14px; }
+      .wallet-picker { width: 100%; max-width: none; }
+      .wallet-switcher { width: 100%; max-width: none; }
+      .notification-panel { position: fixed; top: 72px; right: 12px; }
+      .quick-actions { gap: 7px; margin-top: 20px; }
+      .quick-actions button { min-height: 48px; padding: 10px 5px; font-size: 12px; }
+      .stats-grid { gap: 8px; }
+      .stat-card { padding: 13px 11px; }
+      .stat-label { min-height: 36px; font-size: 11px; }
+      .stat-value { font-size: 14px; overflow-wrap: anywhere; }
+      .panel { padding: 15px; }
+      .panel-header { align-items: flex-start; }
+      .donut-layout { grid-template-columns: 1fr; justify-items: center; gap: 8px; }
+      .legend { width: 100%; }
+      .transaction-row { grid-template-columns: 34px minmax(0, 1fr) auto 24px; gap: 7px; }
+      .transaction-icon { width: 34px; height: 34px; }
+      .transaction-amount { font-size: 11px; }
+      .filters { grid-template-columns: 1fr; }
+      .modal { border-radius: 20px 20px 0 0; padding: 18px 16px max(18px, env(safe-area-inset-bottom)); }
+    }
+    @media (min-width: 480px) and (max-width: 719px) {
+      .hero-top { align-items: center; }
+      .wallet-picker { max-width: 170px; }
+    }
+    @media (min-width: 720px) {
+      .app-shell { padding: 28px; } .stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .span-2 { grid-column: span 2; } .modal-backdrop { align-items: center; }
+    }
+    @media (min-width: 1100px) {
+      .app-shell { padding: 34px; } .content-grid { grid-template-columns: 1.1fr .9fr 1fr; }
+      .span-2 { grid-column: span 2; } .span-3 { grid-column: span 3; }
+    }
+    @media (min-width: 1600px) {
+      .app-shell { padding-left: 48px; padding-right: 48px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">₽</div><div><h1>MONEY MANAGEMEN</h1><p>Rencanakan. Catat. Bertumbuh.</p></div></div>
+      <div class="topbar-tools"><div class="notification-wrap"><button class="notification-button" id="notificationToggle" aria-label="Buka notifikasi" aria-expanded="false">🔔<span class="notification-badge" id="notificationBadge" hidden>0</span></button><div class="notification-panel" id="notificationPanel" hidden><div class="notification-head"><strong>Notifikasi</strong><span id="notificationSummary">Aktivitas terbaru</span></div><div class="notification-list" id="notificationList"></div></div></div></div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div><p class="eyebrow">Total saldo semua dompet</p><h2 class="balance" id="totalBalance">Rp0</h2><p class="hero-note" id="balanceNote">Mulai dengan menambahkan transaksi pertamamu.</p></div>
+        <div class="wallet-switcher"><button class="wallet-picker" id="walletPicker" aria-label="Pilih dompet" aria-expanded="false"><span id="walletPickerLabel">Pilih dompet</span><span class="wallet-picker-chevron">⌄</span></button><div class="wallet-menu" id="walletMenu" hidden></div></div>
+      </div>
+      <div class="quick-actions">
+        <button data-action="income">＋ Pemasukan</button><button data-action="expense">− Pengeluaran</button><button data-action="transfer">⇄ Transfer</button>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Ringkasan bulan ini">
+      <article class="stat-card"><p class="stat-label">Pemasukan bulan ini</p><p class="stat-value positive" id="monthIncome">Rp0</p></article>
+      <article class="stat-card"><p class="stat-label">Pengeluaran bulan ini</p><p class="stat-value negative" id="monthExpense">Rp0</p></article>
+      <article class="stat-card"><p class="stat-label">Rasio menabung</p><p class="stat-value" id="savingRatio">0%</p></article>
+      <article class="stat-card"><p class="stat-label">Total transaksi</p><p class="stat-value" id="transactionCount">0</p></article>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel span-2">
+        <div class="panel-header"><div><h2>Arus kas</h2><p class="panel-subtitle">Perbandingan pemasukan dan pengeluaran 6 bulan terakhir</p></div></div>
+        <div class="chart-wrap"><svg id="cashflowChart" class="bar-chart" viewBox="0 0 600 230" role="img" aria-label="Grafik arus kas"></svg></div>
+      </section>
+      <section class="panel">
+        <div class="panel-header"><div><h2>Pengeluaran per kategori</h2><p class="panel-subtitle">Bulan ini</p></div></div>
+        <div id="categoryChart" class="chart-wrap"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-header"><div><h2>Dompet saya</h2><p class="panel-subtitle" id="walletTotalLabel">0 dompet</p></div><button class="text-button" data-action="wallet">+ Tambah</button></div>
+        <div class="wallet-list" id="walletList"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-header"><div><h2>Target tabungan</h2><p class="panel-subtitle">Satu langkah kecil setiap hari</p></div><button class="text-button" data-action="goal">Atur</button></div>
+        <div id="goalContent"></div>
+      </section>
+      <section class="panel span-2">
+        <div class="panel-header"><div><h2>Riwayat transaksi</h2><p class="panel-subtitle">Aktivitas keuangan terbaru</p></div><button class="text-button" id="exportCsv">↓ CSV</button></div>
+        <div class="filters"><select id="typeFilter" aria-label="Filter jenis"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer</option></select><input id="monthFilter" type="month" aria-label="Filter bulan"></div>
+        <div class="transaction-list" id="transactionList"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><h2 id="modalTitle"></h2><button class="close-button" id="closeModal" aria-label="Tutup">×</button></div><div id="modalBody"></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const KEY = "money-managemen-v1";
+    const colors = ["#1f4d45", "#f07b5f", "#4d86c7", "#e7b84b", "#8a6bbd", "#55a88c"];
+    const categories = ["Makanan", "Transportasi", "Belanja", "Tagihan", "Hiburan", "Kesehatan", "Lainnya"];
+    const defaultState = {
+      wallets: [{ id: "wallet-main", name: "Dompet Utama", emoji: "👛" }],
+      transactions: [], goal: { name: "Dana darurat", target: 10000000 }, activeWallet: "wallet-main", theme: "system", notificationsSeenAt: 0
+    };
+    let state = loadState();
+    const $ = (selector) => document.querySelector(selector);
+    const rupiah = (value) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(value || 0);
+    const localDateKey = (date = new Date()) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+    const dateNow = () => localDateKey();
+    const monthNow = () => localDateKey().slice(0, 7);
+    const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    function loadState() { try { const saved = JSON.parse(localStorage.getItem(KEY)); return saved ? { ...defaultState, ...saved } : structuredClone(defaultState); } catch { return structuredClone(defaultState); } }
+    function saveState() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { showToast("Data tidak dapat disimpan di browser."); } }
+    function walletBalance(id) {
+      return state.transactions.reduce((sum, tx) => {
+        if (tx.type === "income" && tx.walletId === id) return sum + tx.amount;
+        if (tx.type === "expense" && tx.walletId === id) return sum - tx.amount;
+        if (tx.type === "transfer" && tx.from === id) return sum - tx.amount;
+        if (tx.type === "transfer" && tx.to === id) return sum + tx.amount;
+        return sum;
+      }, 0);
+    }
+    function belongsToWallet(tx, walletId = state.activeWallet) {
+      return tx.type === "transfer" ? tx.from === walletId || tx.to === walletId : tx.walletId === walletId;
+    }
+    function monthTransactions(month = monthNow(), walletId = state.activeWallet) {
+      return state.transactions.filter((tx) => tx.date.startsWith(month) && belongsToWallet(tx, walletId));
+    }
+    function formatDate(date) { return new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric" }).format(new Date(date + "T00:00:00")); }
+    function walletName(id) { return state.wallets.find((wallet) => wallet.id === id)?.name || "Dompet dihapus"; }
+    function render() {
+      const activeWallet = state.wallets.find((wallet) => wallet.id === state.activeWallet) || state.wallets[0];
+      const month = monthTransactions();
+      const income = month.filter((tx) => tx.type === "income").reduce((sum, tx) => sum + tx.amount, 0);
+      const expense = month.filter((tx) => tx.type === "expense").reduce((sum, tx) => sum + tx.amount, 0);
+      const totalBalance = state.wallets.reduce((sum, wallet) => sum + walletBalance(wallet.id), 0);
+      $("#totalBalance").textContent = rupiah(walletBalance(activeWallet.id));
+      $("#balanceNote").textContent = "Total semua dompet " + rupiah(totalBalance) + " • " + (income - expense >= 0 ? "Keuanganmu tetap positif bulan ini." : "Saatnya cek kembali pengeluaranmu.");
+      document.querySelector(".hero .eyebrow").textContent = "Saldo " + activeWallet.emoji + " " + activeWallet.name;
+      $("#monthIncome").textContent = rupiah(income); $("#monthExpense").textContent = rupiah(expense);
+      $("#savingRatio").textContent = income ? Math.max(0, Math.round((income - expense) / income * 100)) + "%" : "0%";
+      $("#transactionCount").textContent = state.transactions.filter((tx) => belongsToWallet(tx)).length;
+      $("#walletPickerLabel").textContent = activeWallet.emoji + "  " + activeWallet.name;
+      $("#walletMenu").innerHTML = state.wallets.map((wallet) => `<button class="wallet-option ${wallet.id === state.activeWallet ? "active" : ""}" data-select-wallet="${wallet.id}"><span class="wallet-option-emoji">${escapeHtml(wallet.emoji)}</span><span><span class="wallet-option-name">${escapeHtml(wallet.name)}</span><br><span class="wallet-option-balance">${rupiah(walletBalance(wallet.id))}</span></span><span class="wallet-option-check">${wallet.id === state.activeWallet ? "✓" : ""}</span></button>`).join("");
+      $("#walletTotalLabel").textContent = state.wallets.length + " dompet";
+      $("#walletList").innerHTML = state.wallets.map((wallet) => `<div class="wallet-row"><div class="wallet-info"><span class="wallet-emoji">${escapeHtml(wallet.emoji)}</span><span class="wallet-name">${escapeHtml(wallet.name)}</span></div><div class="wallet-actions"><span class="wallet-balance">${rupiah(walletBalance(wallet.id))}</span><button class="mini-button" data-edit-wallet="${wallet.id}" aria-label="Ubah ${escapeHtml(wallet.name)}">✎</button><button class="mini-button" data-delete-wallet="${wallet.id}" aria-label="Hapus ${escapeHtml(wallet.name)}">×</button></div></div>`).join("");
+      renderGoal(income - expense); renderTransactions(); renderDonut(month); renderCashflow(); renderNotifications();
+    }
+    function renderNotifications() {
+      const sorted = [...state.transactions].sort((a, b) => b.createdAt - a.createdAt);
+      const unread = sorted.filter((tx) => tx.createdAt > (state.notificationsSeenAt || 0)).length;
+      $("#notificationBadge").hidden = unread === 0;
+      $("#notificationBadge").textContent = unread > 9 ? "9+" : unread;
+      $("#notificationSummary").textContent = unread ? unread + " belum dibaca" : "Semua sudah dibaca";
+      $("#notificationList").innerHTML = sorted.length ? sorted.slice(0, 10).map((tx) => {
+        const isTransfer = tx.type === "transfer";
+        const label = tx.type === "income" ? "Pemasukan baru" : tx.type === "expense" ? "Pengeluaran tercatat" : "Transfer antar dompet";
+        const detail = isTransfer ? `${walletName(tx.from)} → ${walletName(tx.to)}` : `${tx.note || tx.category} • ${walletName(tx.walletId)}`;
+        return `<div class="notification-item"><span class="notification-icon">${tx.type === "income" ? "↗" : tx.type === "expense" ? "↘" : "⇄"}</span><div><div class="notification-title">${label} · ${rupiah(tx.amount)}</div><div class="notification-meta">${escapeHtml(detail)} • ${formatDate(tx.date)}</div></div></div>`;
+      }).join("") : `<div class="notification-empty">Belum ada aktivitas keuangan.</div>`;
+    }
+    function renderGoal(savedThisMonth) {
+      const goal = state.goal; const progress = goal.target ? Math.min(100, Math.max(0, savedThisMonth / goal.target * 100)) : 0;
+      $("#goalContent").innerHTML = `<div class="goal"><div class="goal-top"><div><p class="goal-title">${escapeHtml(goal.name)}</p><p class="goal-meta">Target ${rupiah(goal.target)}</p></div><strong>${Math.round(progress)}%</strong></div><div class="progress"><span style="width:${progress}%"></span></div><div class="goal-foot"><span>${rupiah(Math.max(0, savedThisMonth))} terkumpul bulan ini</span><span>${rupiah(Math.max(0, goal.target - savedThisMonth))} lagi</span></div></div>`;
+    }
+    function renderTransactions() {
+      const type = $("#typeFilter").value, month = $("#monthFilter").value;
+      const items = state.transactions.filter((tx) => belongsToWallet(tx) && (type === "all" || tx.type === type) && (!month || tx.date.startsWith(month))).sort((a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt);
+      $("#transactionList").innerHTML = items.length ? items.slice(0, 30).map((tx) => {
+        const transfer = tx.type === "transfer"; const title = transfer ? `${walletName(tx.from)} → ${walletName(tx.to)}` : (tx.note || tx.category);
+        const meta = transfer ? `Transfer${tx.note ? " • " + tx.note : ""} • ${formatDate(tx.date)}` : `${tx.category} • ${walletName(tx.walletId)} • ${formatDate(tx.date)}`;
+        return `<div class="transaction-row"><div class="transaction-icon">${transfer ? "⇄" : tx.type === "income" ? "↗" : "↘"}</div><div><div class="transaction-title">${escapeHtml(title)}</div><div class="transaction-meta">${escapeHtml(meta)}</div></div><div class="transaction-amount ${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "positive" : "negative"}">${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "+" : "-"}${rupiah(tx.amount)}</div><button class="mini-button" data-delete-tx="${tx.id}" aria-label="Hapus transaksi">×</button></div>`;
+      }).join("") : `<div class="empty">Belum ada transaksi yang cocok dengan filter.</div>`;
+    }
+    function renderDonut(month) {
+      const sums = categories.map((category) => ({ category, value: month.filter((tx) => tx.type === "expense" && tx.category === category).reduce((sum, tx) => sum + tx.amount, 0) })).filter((item) => item.value);
+      const total = sums.reduce((sum, item) => sum + item.value, 0);
+      if (!total) { $("#categoryChart").innerHTML = `<div class="empty">Belum ada pengeluaran bulan ini.</div>`; return; }
+      let offset = 0; const circles = sums.map((item, index) => { const length = item.value / total * 100; const circle = `<circle cx="75" cy="75" r="52" pathLength="100" stroke="${colors[index % colors.length]}" stroke-dasharray="${length} ${100 - length}" stroke-dashoffset="${-offset}"></circle>`; offset += length; return circle; }).join("");
+      $("#categoryChart").innerHTML = `<div class="donut-layout"><svg class="donut" viewBox="0 0 150 150" role="img" aria-label="Pengeluaran per kategori"><circle class="donut-track" cx="75" cy="75" r="52"></circle>${circles}<text x="75" y="78" text-anchor="middle" class="donut-center">${rupiah(total).replace("Rp", "Rp ")}</text></svg><div class="legend">${sums.map((item, index) => `<div class="legend-item"><i class="legend-dot" style="background:${colors[index % colors.length]}"></i><span>${escapeHtml(item.category)}</span><strong>${Math.round(item.value / total * 100)}%</strong></div>`).join("")}</div></div>`;
+    }
+    function renderCashflow() {
+      const months = []; const now = new Date();
+      for (let i = 5; i >= 0; i--) { const date = new Date(now.getFullYear(), now.getMonth() - i, 1); months.push({ key: localDateKey(date).slice(0, 7), label: date.toLocaleDateString("id-ID", { month: "short" }) }); }
+      const values = months.map((item) => { const tx = monthTransactions(item.key); return { ...item, income: tx.filter((x) => x.type === "income").reduce((s, x) => s + x.amount, 0), expense: tx.filter((x) => x.type === "expense").reduce((s, x) => s + x.amount, 0) }; });
+      const max = Math.max(1, ...values.flatMap((item) => [item.income, item.expense])); const chartHeight = 158; const base = 196; const barWidth = 22;
+      const compact = (value) => value >= 1000000 ? "Rp" + (value / 1000000).toFixed(1) + "jt" : value >= 1000 ? "Rp" + Math.round(value / 1000) + "rb" : "Rp0";
+      const grid = [0, .5, 1].map((ratio) => { const y = base - chartHeight * ratio; return `<line class="grid-line" x1="28" y1="${y}" x2="580" y2="${y}"/><text x="23" y="${y + 3}" text-anchor="end">${compact(max * ratio)}</text>`; }).join("");
+      const bars = values.map((item, index) => { const x = 42 + index * 89; const ih = item.income / max * chartHeight, eh = item.expense / max * chartHeight; const incomeLabel = item.income ? `<text class="value-label" x="${x + 11}" y="${Math.max(28, base - ih - 7)}" text-anchor="middle">${compact(item.income)}</text>` : ""; const expenseLabel = item.expense ? `<text class="value-label" x="${x + 39}" y="${Math.max(28, base - eh - 7)}" text-anchor="middle">${compact(item.expense)}</text>` : ""; return `${incomeLabel}${expenseLabel}<rect x="${x}" y="${base - ih}" width="${barWidth}" height="${Math.max(2, ih)}" rx="7" fill="var(--chart-blue)"/><rect x="${x + 28}" y="${base - eh}" width="${barWidth}" height="${Math.max(2, eh)}" rx="7" fill="var(--accent)"/><text x="${x + 25}" y="219" text-anchor="middle">${item.label}</text>`; }).join("");
+      $("#cashflowChart").innerHTML = `${grid}<line x1="28" y1="${base}" x2="580" y2="${base}" stroke="var(--line)"/><text x="580" y="16" text-anchor="end" fill="var(--chart-blue)">● masuk</text><text x="520" y="16" text-anchor="end" fill="var(--accent)">● keluar</text>${bars}`;
+    }
+    function openModal(title, content, onSubmit) { $("#modalTitle").textContent = title; $("#modalBody").innerHTML = content; $("#modalBackdrop").classList.add("open"); const form = $("#modalBody").querySelector("form"); if (form) { form.addEventListener("submit", (event) => { event.preventDefault(); onSubmit(new FormData(form)); }); form.querySelector("input, select")?.focus(); } }
+    function closeModal() { $("#modalBackdrop").classList.remove("open"); $("#modalBody").innerHTML = ""; }
+    function formWallet(wallet) { openModal(wallet ? "Ubah dompet" : "Tambah dompet", `<form><div class="field"><label for="walletName">Nama dompet</label><input id="walletName" name="name" required maxlength="30" value="${wallet ? escapeHtml(wallet.name) : ""}" placeholder="Contoh: Tabungan"></div><div class="field"><label for="walletEmoji">Emoji</label><input id="walletEmoji" name="emoji" required maxlength="2" value="${wallet ? escapeHtml(wallet.emoji) : "💳"}" placeholder="💳"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${wallet ? "Simpan" : "Tambah dompet"}</button></div></form>`, (data) => { if (wallet) { wallet.name = data.get("name").trim(); wallet.emoji = data.get("emoji").trim(); } else { const created = { id: "wallet-" + Date.now(), name: data.get("name").trim(), emoji: data.get("emoji").trim() }; state.wallets.push(created); state.activeWallet = created.id; } saveState(); closeModal(); render(); showToast("Dompet berhasil disimpan."); }); $("#cancelForm").onclick = closeModal; }
+    function formTransaction(type) {
+      const walletOptions = state.wallets.map((wallet) => `<option value="${wallet.id}" ${wallet.id === state.activeWallet ? "selected" : ""}>${escapeHtml(wallet.emoji)} ${escapeHtml(wallet.name)}</option>`).join("");
+      const categoryOptions = categories.map((category) => `<option>${category}</option>`).join("");
+      const isTransfer = type === "transfer";
+      const content = isTransfer ? `<form><div class="field"><label for="from">Dari dompet</label><select id="from" name="from">${walletOptions}</select></div><div class="field"><label for="to">Ke dompet</label><select id="to" name="to">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div><div class="field"><label for="date">Tanggal</label><input id="date" name="date" type="date" required value="${dateNow()}"></div><div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="Opsional"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">Transfer</button></div></form>` : `<form><div class="field"><label for="wallet">Dompet</label><select id="wallet" name="walletId">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div><div class="field"><label for="category">Kategori</label><select id="category" name="category">${categoryOptions}</select></div><div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="${type === "income" ? "Contoh: Gaji bulanan" : "Contoh: Makan siang"}"></div><div class="field"><label for="date">Tanggal</label><input id="date" name="date" type="date" required value="${dateNow()}"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${type === "income" ? "Simpan pemasukan" : "Simpan pengeluaran"}</button></div></form>`;
+      openModal(type === "income" ? "Tambah pemasukan" : type === "expense" ? "Tambah pengeluaran" : "Transfer antar dompet", content, (data) => { const amount = Number(data.get("amount")); if (!amount || amount < 1) return showToast("Nominal harus lebih dari 0."); if (isTransfer && data.get("from") === data.get("to")) return showToast("Pilih dua dompet yang berbeda."); const tx = { id: "tx-" + Date.now(), type, amount, date: data.get("date"), note: String(data.get("note") || "").trim(), createdAt: Date.now() }; if (isTransfer) { tx.from = data.get("from"); tx.to = data.get("to"); } else { tx.walletId = data.get("walletId"); tx.category = data.get("category") || "Lainnya"; } state.transactions.push(tx); saveState(); closeModal(); render(); showToast(type === "income" ? "Pemasukan berhasil dicatat." : type === "expense" ? "Pengeluaran berhasil dicatat." : "Transfer berhasil dicatat."); }); $("#cancelForm").onclick = closeModal;
+    }
+    function formGoal() { openModal("Atur target tabungan", `<form><div class="field"><label for="goalName">Nama target</label><input id="goalName" name="name" required maxlength="40" value="${escapeHtml(state.goal.name)}"></div><div class="field"><label for="goalTarget">Nominal target</label><input id="goalTarget" name="target" type="number" min="1" required value="${state.goal.target}"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">Simpan target</button></div></form>`, (data) => { state.goal = { name: data.get("name").trim(), target: Number(data.get("target")) }; saveState(); closeModal(); render(); showToast("Target tabungan diperbarui."); }); $("#cancelForm").onclick = closeModal; }
+    function showToast(message) { const toast = $("#toast"); toast.textContent = message; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2600); }
+    function exportCsv() { const headers = ["Tanggal", "Jenis", "Nominal", "Kategori", "Catatan", "Dompet"]; const rows = state.transactions.map((tx) => [tx.date, tx.type, tx.amount, tx.category || "Transfer", tx.note || "", tx.type === "transfer" ? `${walletName(tx.from)} ke ${walletName(tx.to)}` : walletName(tx.walletId)]); const csv = [headers, ...rows].map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\n"); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" })); link.download = "money-managemen-" + dateNow() + ".csv"; link.click(); URL.revokeObjectURL(link.href); }
+    document.addEventListener("click", (event) => { const target = event.target.closest("[data-action]"); if (target) { const action = target.dataset.action; if (action === "income" || action === "expense" || action === "transfer") formTransaction(action); if (action === "wallet") formWallet(); if (action === "goal") formGoal(); } const walletOption = event.target.closest("[data-select-wallet]"); if (walletOption) { state.activeWallet = walletOption.dataset.selectWallet; $("#walletMenu").hidden = true; $("#walletPicker").setAttribute("aria-expanded", "false"); saveState(); render(); } const edit = event.target.closest("[data-edit-wallet]"); if (edit) formWallet(state.wallets.find((wallet) => wallet.id === edit.dataset.editWallet)); const removeWallet = event.target.closest("[data-delete-wallet]"); if (removeWallet) { if (state.wallets.length < 2) return showToast("Minimal harus ada satu dompet."); if (confirm("Hapus dompet ini? Transaksi lama tetap tersimpan.")) { state.wallets = state.wallets.filter((wallet) => wallet.id !== removeWallet.dataset.deleteWallet); if (state.activeWallet === removeWallet.dataset.deleteWallet) state.activeWallet = state.wallets[0].id; saveState(); render(); } } const removeTx = event.target.closest("[data-delete-tx]"); if (removeTx && confirm("Hapus transaksi ini?")) { state.transactions = state.transactions.filter((tx) => tx.id !== removeTx.dataset.deleteTx); saveState(); render(); } });
+    $("#walletPicker").addEventListener("click", () => { const menu = $("#walletMenu"); menu.hidden = !menu.hidden; $("#walletPicker").setAttribute("aria-expanded", String(!menu.hidden)); });
+    $("#notificationToggle").addEventListener("click", () => { const panel = $("#notificationPanel"); panel.hidden = !panel.hidden; $("#notificationToggle").setAttribute("aria-expanded", String(!panel.hidden)); if (!panel.hidden) { state.notificationsSeenAt = Date.now(); saveState(); renderNotifications(); } });
+    document.addEventListener("click", (event) => { if (!event.target.closest(".wallet-switcher")) { $("#walletMenu").hidden = true; $("#walletPicker").setAttribute("aria-expanded", "false"); } if (!event.target.closest(".notification-wrap")) { $("#notificationPanel").hidden = true; $("#notificationToggle").setAttribute("aria-expanded", "false"); } });
+    $("#typeFilter").addEventListener("change", renderTransactions); $("#monthFilter").addEventListener("change", renderTransactions); $("#exportCsv").addEventListener("click", exportCsv);
+    $("#closeModal").addEventListener("click", closeModal); $("#modalBackdrop").addEventListener("click", (event) => { if (event.target === $("#modalBackdrop")) closeModal(); });
+    render();
+  </script>
+</body>
+</html>
