@@ -1,0 +1,27 @@
+{
+  "name": "MONEY MANAGEMEN",
+  "short_name": "Money Managemen",
+  "description": "Catat pemasukan, pengeluaran, transfer, dan target tabungan.",
+  "lang": "id-ID",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111b1b",
+  "theme_color": "#111b1b",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
