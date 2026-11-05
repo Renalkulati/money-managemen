@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="id">
 <head>
   <meta charset="utf-8">
@@ -31,28 +31,15 @@
     }
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; border: 0; }
-    .app-shell { width: min(100%, 1080px); max-width: 100%; margin: auto; padding: 22px 18px 40px; }
-    .topbar { position: relative; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .app-shell { width: min(100%, 1080px); max-width: 100%; margin: auto; padding: 22px 18px 108px; }
+    .topbar { position: relative; z-index: 4; display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 28px; }
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-mark { width: 44px; height: 44px; display: grid; place-items: center; color: #fff; border-radius: 14px; background: var(--primary); box-shadow: 0 8px 18px rgba(31,77,69,.20); font-weight: 900; }
+    .brand-mark svg { width: 24px; height: 24px; }
     .brand h1 { color: var(--ink); font-size: 16px; letter-spacing: .08em; margin: 0; font-weight: 850; }
     .brand p { color: var(--muted); font-size: 12px; margin: 2px 0 0; }
-    .topbar-tools { position: absolute; right: 0; display: flex; align-items: center; gap: 9px; }
-    .notification-wrap { position: relative; }
-    .notification-button { position: relative; width: 42px; height: 42px; display: grid; place-items: center; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow); font-size: 19px; }
-    .notification-badge { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; display: grid; place-items: center; padding: 0 4px; color: #fff; background: var(--accent); border: 2px solid var(--bg); border-radius: 99px; font-size: 10px; font-weight: 850; }
-    .notification-panel { position: absolute; top: calc(100% + 10px); right: 0; z-index: 15; width: min(330px, calc(100vw - 32px)); padding: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 45px rgba(0,0,0,.26); }
-    .notification-panel[hidden] { display: none; }
-    .notification-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
-    .notification-head strong { font-size: 14px; }
-    .notification-head span { color: var(--muted); font-size: 11px; }
-    .notification-list { display: grid; gap: 4px; max-height: 310px; overflow-y: auto; margin-top: 8px; }
-    .notification-item { display: grid; grid-template-columns: 32px minmax(0,1fr); gap: 9px; padding: 9px 5px; border-radius: 10px; }
-    .notification-item:hover { background: var(--surface-2); }
-    .notification-icon { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px; background: var(--surface-2); }
-    .notification-title { color: var(--ink); font-size: 12px; font-weight: 750; }
-    .notification-meta { color: var(--muted); font-size: 11px; margin-top: 2px; }
-    .notification-empty { color: var(--muted); padding: 18px 4px 10px; text-align: center; font-size: 12px; }
+    .activity-notice { display: none; margin: -12px 0 18px; padding: 11px 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--primary); border-radius: 12px; font-size: 13px; font-weight: 700; text-align: center; }
+    .activity-notice.show { display: block; }
     .hero { position: relative; overflow: visible; border-radius: 24px; padding: 26px; color: #fff; background: #193b3a; box-shadow: 0 18px 38px rgba(25,59,58,.20); margin-bottom: 18px; }
     .hero::after { content: ""; position: absolute; width: 230px; height: 230px; right: -85px; top: -105px; border-radius: 50%; background: rgba(240,123,95,.27); }
     .hero > * { position: relative; z-index: 1; }
@@ -72,10 +59,15 @@
     .wallet-option-name { font-size: 12px; font-weight: 800; }
     .wallet-option-balance { color: var(--muted); font-size: 11px; font-weight: 700; }
     .wallet-option-check { color: var(--positive); font-weight: 900; }
-    .quick-actions { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 620px; margin: 24px auto 0; }
-    .quick-actions button { padding: 13px 8px; border-radius: 12px; background: rgba(255,255,255,.10); color: #fff; border: 1px solid rgba(255,255,255,.18); font-weight: 700; transition: .2s ease; }
-    .quick-actions button:first-child { background: var(--accent); border-color: var(--accent); }
-    .quick-actions button:hover { transform: translateY(-2px); background: rgba(255,255,255,.22); }
+    .service-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .service-button { display: grid; justify-items: center; align-content: center; gap: 8px; min-height: 82px; padding: 10px 6px; color: var(--muted); background: transparent; border-radius: 14px; text-align: center; font-size: 12px; font-weight: 750; }
+    .service-button:hover, .service-button:focus-visible { color: var(--ink); background: var(--surface-2); outline: none; }
+    .service-icon { width: 28px; height: 28px; color: var(--primary); }
+    .service-button:hover .service-icon, .service-button:focus-visible .service-icon { color: var(--accent); }
+    .bottom-nav { position: fixed; left: 50%; bottom: 0; z-index: 10; display: grid; grid-template-columns: repeat(5, 1fr); width: min(100%, 720px); padding: 8px max(12px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); background: rgba(24,38,37,.96); border: 1px solid var(--line); border-bottom: 0; border-radius: 18px 18px 0 0; box-shadow: 0 -12px 30px rgba(0,0,0,.2); backdrop-filter: blur(14px); }
+    .bottom-nav button, .bottom-nav a { display: grid; justify-items: center; gap: 4px; padding: 5px 3px; color: var(--muted); background: transparent; font-size: 10px; font-weight: 750; text-decoration: none; }
+    .bottom-nav button.active, .bottom-nav button:hover, .bottom-nav a:hover, .bottom-nav a:focus-visible { color: var(--primary); }
+    .bottom-nav svg { width: 22px; height: 22px; }
     .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 18px; }
     .stat-card, .panel, .wallet-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
     .stat-card { padding: 18px; text-align: left; transition: transform .2s ease, box-shadow .2s ease; }
@@ -83,9 +75,18 @@
     .stat-label { color: #bfd0ca; font-size: 13px; margin: 0 0 8px; font-weight: 500; }
     .stat-value { color: var(--ink); font-size: 18px; font-weight: 850; margin: 0; }
     .positive { color: var(--positive); } .negative { color: var(--negative); }
-    .content-grid { display: grid; gap: 18px; min-width: 0; }
+    .content-grid { display: grid; gap: 18px; min-width: 0; padding-bottom: 96px; align-items: start; }
+    .app-shell[data-view]:not([data-view="home"]) .hero,
+    .app-shell[data-view]:not([data-view="home"]) .stats-grid,
+    .app-shell[data-view]:not([data-view="home"]) .service-grid { display: none; }
+    .content-grid[data-view="home"] { display: none; }
+    .content-grid[data-view="charts"] > .panel:not([data-section="charts"]),
+    .content-grid[data-view="wallets"] > .panel:not([data-section="wallets"]),
+    .content-grid[data-view="goal"] > .panel:not([data-section="goal"]),
+    .content-grid[data-view="history"] > .panel:not([data-section="history"]) { display: none; }
     .content-grid > *, .stats-grid > * { min-width: 0; }
-    .panel { min-width: 0; padding: 20px; overflow: hidden; }
+    .panel { width: 100%; min-width: 0; padding: 20px; overflow: hidden; }
+    .content-grid { width: 100%; }
     .panel-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; text-align: left; }
     .panel h2 { color: var(--ink); font-size: 17px; margin: 0; font-weight: 850; }
     .panel-subtitle { color: #aebfba; font-size: 13px; margin: 3px 0 0; font-weight: 450; }
@@ -110,7 +111,8 @@
     .wallet-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px; background: var(--surface-2); border-radius: 14px; border: 1px solid transparent; }
     .wallet-row:hover { border-color: var(--line); background: var(--surface); }
     .wallet-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .wallet-emoji { font-size: 25px; }     .wallet-name { color: var(--ink); font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .wallet-icon { width: 25px; height: 25px; color: var(--primary); flex: 0 0 auto; }
+    .wallet-name { color: var(--ink); font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .wallet-balance { font-weight: 800; font-size: 13px; text-align: right; white-space: nowrap; }
     .wallet-actions { display: flex; gap: 4px; }
     .mini-button { background: transparent; color: var(--muted); padding: 5px; border-radius: 8px; }
@@ -125,10 +127,30 @@
     .transaction-row { display: grid; grid-template-columns: 38px minmax(0, 1fr) auto 30px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
     .transaction-row:last-child { border-bottom: 0; }
     .transaction-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: var(--surface-2); color: var(--primary); font-weight: 800; }
+    .transaction-icon svg { width: 20px; height: 20px; }
     .transaction-title { color: var(--ink); font-weight: 750; font-size: 13px; } .transaction-meta { color: #aebfba; font-size: 11px; margin-top: 2px; }
     .transaction-amount { font-size: 13px; font-weight: 850; white-space: nowrap; }
     .empty { color: var(--muted); padding: 25px 8px; text-align: center; }
     .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .filters select, .filters input { width: 100%; min-width: 0; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; outline: none; appearance: none; }
+    .filters select { background-image: linear-gradient(45deg, transparent 50%, var(--primary) 50%), linear-gradient(135deg, var(--primary) 50%, transparent 50%); background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+    .filters select:focus, .filters input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(104,196,173,.14); }
+    .date-control { position: relative; min-width: 0; }
+    .date-trigger { width: 100%; padding: 10px 12px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; text-align: left; }
+    .date-trigger::after { content: ""; float: right; width: 9px; height: 9px; margin-top: 3px; border-right: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(45deg); }
+    .date-trigger:focus-visible { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(104,196,173,.14); }
+    .date-popover { position: fixed; z-index: 30; width: min(292px, calc(100vw - 32px)); padding: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 45px rgba(0,0,0,.32); }
+    .date-popover-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+    .date-popover-header strong { font-size: 14px; }
+    .date-nav { width: 30px; height: 30px; color: var(--ink); background: var(--surface-2); border-radius: 9px; font-size: 18px; }
+    .date-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .date-grid button { min-height: 32px; color: var(--muted); background: transparent; border-radius: 8px; font-size: 12px; }
+    .date-grid button:hover, .date-grid button.selected { color: #fff; background: var(--primary); }
+    .date-grid .date-weekday { color: var(--primary); font-weight: 800; font-size: 10px; }
+    .month-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .month-grid button { padding: 10px 5px; color: var(--muted); background: var(--surface-2); border-radius: 9px; font-size: 12px; }
+    .month-grid button:hover, .month-grid button.selected { color: #fff; background: var(--primary); }
+    .date-clear { width: 100%; margin-top: 10px; padding: 8px; color: var(--primary); background: transparent; font-size: 12px; font-weight: 750; }
     .field, .field select, .field input, .field textarea { width: 100%; }
     .field { display: grid; gap: 6px; margin-bottom: 14px; }
     .field label { color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -148,7 +170,7 @@
     .toast { position: fixed; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 40; color: #fff; background: #202640; border-radius: 12px; padding: 11px 16px; box-shadow: var(--shadow); transition: .2s ease; }
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     @media (max-width: 479px) {
-      .app-shell { padding: 16px 12px 28px; }
+      .app-shell { padding: 16px 12px 96px; }
       .topbar { margin-bottom: 18px; }
       .brand { gap: 9px; }
       .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
@@ -159,9 +181,9 @@
       .hero-top { flex-direction: column; gap: 14px; }
       .wallet-picker { width: 100%; max-width: none; }
       .wallet-switcher { width: 100%; max-width: none; }
-      .notification-panel { position: fixed; top: 72px; right: 12px; }
-      .quick-actions { gap: 7px; margin-top: 20px; }
-      .quick-actions button { min-height: 48px; padding: 10px 5px; font-size: 12px; }
+      .service-grid { gap: 6px; padding: 10px; }
+      .service-button { min-height: 74px; padding: 8px 3px; font-size: 11px; }
+      .service-icon { width: 25px; height: 25px; }
       .stats-grid { gap: 8px; }
       .stat-card { padding: 13px 11px; }
       .stat-label { min-height: 36px; font-size: 11px; }
@@ -184,6 +206,10 @@
       .app-shell { padding: 28px; } .stats-grid { grid-template-columns: repeat(4, 1fr); }
       .content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .span-2 { grid-column: span 2; } .modal-backdrop { align-items: center; }
+      .content-grid[data-view="charts"] > .panel[data-section="charts"],
+      .content-grid[data-view="wallets"] > .panel[data-section="wallets"],
+      .content-grid[data-view="goal"] > .panel[data-section="goal"],
+      .content-grid[data-view="history"] > .panel[data-section="history"] { grid-column: 1 / -1; }
     }
     @media (min-width: 1100px) {
       .app-shell { padding: 34px; } .content-grid { grid-template-columns: 1.1fr .9fr 1fr; }
@@ -198,19 +224,16 @@
   </style>
 </head>
 <body>
-  <main class="app-shell">
+  <main class="app-shell" data-view="home">
     <header class="topbar">
-      <div class="brand"><div class="brand-mark">₽</div><div><h1>MONEY MANAGEMEN</h1><p>Rencanakan. Catat. Bertumbuh.</p></div></div>
-      <div class="topbar-tools"><div class="notification-wrap"><button class="notification-button" id="notificationToggle" aria-label="Buka notifikasi" aria-expanded="false">🔔<span class="notification-badge" id="notificationBadge" hidden>0</span></button><div class="notification-panel" id="notificationPanel" hidden><div class="notification-head"><strong>Notifikasi</strong><span id="notificationSummary">Aktivitas terbaru</span></div><div class="notification-list" id="notificationList"></div></div></div></div>
+      <div class="brand"><div class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3"/><path d="M4 9h16m-8 3v4m-2-2h4"/></svg></div><div><h1>MONEY MANAGEMEN</h1><p>Rencanakan. Catat. Bertumbuh.</p></div></div>
     </header>
+    <div class="activity-notice" id="activityNotice" role="status" aria-live="polite"></div>
 
     <section class="hero">
       <div class="hero-top">
         <div><p class="eyebrow">Total saldo semua dompet</p><h2 class="balance" id="totalBalance">Rp0</h2><p class="hero-note" id="balanceNote">Mulai dengan menambahkan transaksi pertamamu.</p></div>
         <div class="wallet-switcher"><button class="wallet-picker" id="walletPicker" aria-label="Pilih dompet" aria-expanded="false"><span id="walletPickerLabel">Pilih dompet</span><span class="wallet-picker-chevron">⌄</span></button><div class="wallet-menu" id="walletMenu" hidden></div></div>
-      </div>
-      <div class="quick-actions">
-        <button data-action="income">＋ Pemasukan</button><button data-action="expense">− Pengeluaran</button><button data-action="transfer">⇄ Transfer</button>
       </div>
     </section>
 
@@ -221,30 +244,46 @@
       <article class="stat-card"><p class="stat-label">Total transaksi</p><p class="stat-value" id="transactionCount">0</p></article>
     </section>
 
-    <div class="content-grid">
-      <section class="panel span-2">
+    <nav class="service-grid" aria-label="Menu layanan">
+      <button class="service-button" type="button" data-action="transfer"><svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 7h12l-3-3m3 3-3 3M19 17H7l3 3m-3-3 3-3"/><rect x="3" y="6" width="18" height="12" rx="3"/></svg><span>Transfer</span></button>
+      <button class="service-button" type="button" data-action="income"><svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5m0 0L6 11m6-6 6 6"/><path d="M4 20h16"/></svg><span>Pemasukan</span></button>
+      <button class="service-button" type="button" data-action="expense"><svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14m0 0 6-6m-6 6-6-6"/><path d="M4 4h16"/></svg><span>Pengeluaran</span></button>
+      <button class="service-button" type="button" data-view="wallets"><svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18m-5 4h3"/></svg><span>Dompet</span></button>
+      <button class="service-button" type="button" data-view="charts"><svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 19V9m7 10V5m7 14v-7"/></svg><span>Grafik</span></button>
+    </nav>
+
+    <div class="content-grid" id="contentGrid" data-view="home">
+      <section class="panel span-2" data-section="charts">
         <div class="panel-header"><div><h2>Arus kas</h2><p class="panel-subtitle">Perbandingan pemasukan dan pengeluaran 6 bulan terakhir</p></div></div>
         <div class="chart-wrap"><svg id="cashflowChart" class="bar-chart" viewBox="0 0 600 230" role="img" aria-label="Grafik arus kas"></svg></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-section="charts">
         <div class="panel-header"><div><h2>Pengeluaran per kategori</h2><p class="panel-subtitle">Bulan ini</p></div></div>
         <div id="categoryChart" class="chart-wrap"></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-section="wallets">
         <div class="panel-header"><div><h2>Dompet saya</h2><p class="panel-subtitle" id="walletTotalLabel">0 dompet</p></div><button class="text-button" data-action="wallet">+ Tambah</button></div>
         <div class="wallet-list" id="walletList"></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-section="goal">
         <div class="panel-header"><div><h2>Target tabungan</h2><p class="panel-subtitle">Satu langkah kecil setiap hari</p></div><button class="text-button" data-action="goal">Atur</button></div>
         <div id="goalContent"></div>
       </section>
-      <section class="panel span-2">
-        <div class="panel-header"><div><h2>Riwayat transaksi</h2><p class="panel-subtitle">Aktivitas keuangan terbaru</p></div><button class="text-button" id="exportCsv">↓ CSV</button></div>
-        <div class="filters"><select id="typeFilter" aria-label="Filter jenis"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer</option></select><input id="monthFilter" type="month" aria-label="Filter bulan"></div>
+      <section class="panel span-2" data-section="history">
+        <div class="panel-header"><div><h2>Riwayat transaksi</h2><p class="panel-subtitle">Aktivitas keuangan terbaru</p></div><div><button class="text-button" id="importJsonButton">Impor JSON</button><input id="importJson" type="file" accept=".json,application/json" hidden><button class="text-button" id="exportCsv">↓ CSV</button></div></div>
+        <div class="filters"><select id="typeFilter" aria-label="Filter jenis"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer</option></select><div class="date-control"><button class="date-trigger" id="monthFilterButton" type="button" data-picker="month" aria-label="Filter bulan">Semua bulan</button><input id="monthFilter" type="hidden" value=""></div></div>
         <div class="transaction-list" id="transactionList"></div>
       </section>
     </div>
   </main>
+
+  <nav class="bottom-nav" aria-label="Navigasi utama">
+    <button type="button" data-bottom-view="home" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m4 11 8-7 8 7"/><path d="M6 10v9h12v-9M10 19v-5h4v5"/></svg><span>Beranda</span></button>
+    <button type="button" data-bottom-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 5h14v14H5zM8 9h8M8 13h8M8 17h5"/></svg><span>Transaksi</span></button>
+    <a href="https://t.me/BOT_MONEY_MANAGEMEN?text=Halo%2C%20saya%20ingin%20mencatat%20transaksi%20dari%20foto%20struk." target="_blank" rel="noopener noreferrer" aria-label="Buka bot Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m21 4-3.1 16-6.1-5.2-3.7 2.9.9-4.2L21 4Z"/><path d="m9 13.5 8.3-6.8"/></svg><span>Telegram</span></a>
+    <button type="button" data-bottom-view="goal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m17.5 6.5 2-2"/></svg><span>Target</span></button>
+    <button type="button" data-bottom-view="wallets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18m-5 4h3"/></svg><span>Dompet</span></button>
+  </nav>
 
   <div class="modal-backdrop" id="modalBackdrop" role="presentation"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><h2 id="modalTitle"></h2><button class="close-button" id="closeModal" aria-label="Tutup">×</button></div><div id="modalBody"></div></section></div>
   <div class="toast" id="toast" role="status"></div>
@@ -254,7 +293,7 @@
     const colors = ["#1f4d45", "#f07b5f", "#4d86c7", "#e7b84b", "#8a6bbd", "#55a88c"];
     const categories = ["Makanan", "Transportasi", "Belanja", "Tagihan", "Hiburan", "Kesehatan", "Lainnya"];
     const defaultState = {
-      wallets: [{ id: "wallet-main", name: "Dompet Utama", emoji: "👛" }],
+      wallets: [{ id: "wallet-main", name: "Dompet Utama", emoji: "" }],
       transactions: [], goal: { name: "Dana darurat", target: 10000000 }, activeWallet: "wallet-main", theme: "system", notificationsSeenAt: 0
     };
     let state = loadState();
@@ -269,6 +308,8 @@
     const dateNow = () => localDateKey();
     const monthNow = () => localDateKey().slice(0, 7);
     const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    const walletIcon = () => `<svg class="wallet-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 9h18m-5 4h3"/></svg>`;
+    const transactionIcon = (type) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">${type === "income" ? '<path d="M12 19V5m0 0L6 11m6-6 6 6"/><path d="M4 20h16"/>' : type === "expense" ? '<path d="M12 5v14m0 0 6-6m-6 6-6-6"/><path d="M4 4h16"/>' : '<path d="M5 7h12l-3-3m3 3-3 3M19 17H7l3 3m-3-3 3-3"/>'}</svg>`;
     function loadState() { try { const saved = JSON.parse(localStorage.getItem(KEY)); return saved ? { ...defaultState, ...saved } : structuredClone(defaultState); } catch { return structuredClone(defaultState); } }
     function saveState() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { showToast("Data tidak dapat disimpan di browser."); } }
     function walletBalance(id) {
@@ -296,28 +337,15 @@
       const totalBalance = state.wallets.reduce((sum, wallet) => sum + walletBalance(wallet.id), 0);
       $("#totalBalance").textContent = rupiah(walletBalance(activeWallet.id));
       $("#balanceNote").textContent = "Total semua dompet " + rupiah(totalBalance) + " • " + (income - expense >= 0 ? "Keuanganmu tetap positif bulan ini." : "Saatnya cek kembali pengeluaranmu.");
-      document.querySelector(".hero .eyebrow").textContent = "Saldo " + activeWallet.emoji + " " + activeWallet.name;
+      document.querySelector(".hero .eyebrow").textContent = "Saldo " + activeWallet.name;
       $("#monthIncome").textContent = rupiah(income); $("#monthExpense").textContent = rupiah(expense);
       $("#savingRatio").textContent = income ? Math.max(0, Math.round((income - expense) / income * 100)) + "%" : "0%";
       $("#transactionCount").textContent = state.transactions.filter((tx) => belongsToWallet(tx)).length;
-      $("#walletPickerLabel").textContent = activeWallet.emoji + "  " + activeWallet.name;
-      $("#walletMenu").innerHTML = state.wallets.map((wallet) => `<button class="wallet-option ${wallet.id === state.activeWallet ? "active" : ""}" data-select-wallet="${wallet.id}"><span class="wallet-option-emoji">${escapeHtml(wallet.emoji)}</span><span><span class="wallet-option-name">${escapeHtml(wallet.name)}</span><br><span class="wallet-option-balance">${rupiah(walletBalance(wallet.id))}</span></span><span class="wallet-option-check">${wallet.id === state.activeWallet ? "✓" : ""}</span></button>`).join("");
+      $("#walletPickerLabel").textContent = activeWallet.name;
+      $("#walletMenu").innerHTML = state.wallets.map((wallet) => `<button class="wallet-option ${wallet.id === state.activeWallet ? "active" : ""}" data-select-wallet="${wallet.id}">${walletIcon()}<span><span class="wallet-option-name">${escapeHtml(wallet.name)}</span><br><span class="wallet-option-balance">${rupiah(walletBalance(wallet.id))}</span></span><span class="wallet-option-check">${wallet.id === state.activeWallet ? "✓" : ""}</span></button>`).join("");
       $("#walletTotalLabel").textContent = state.wallets.length + " dompet";
-      $("#walletList").innerHTML = state.wallets.map((wallet) => `<div class="wallet-row"><div class="wallet-info"><span class="wallet-emoji">${escapeHtml(wallet.emoji)}</span><span class="wallet-name">${escapeHtml(wallet.name)}</span></div><div class="wallet-actions"><span class="wallet-balance">${rupiah(walletBalance(wallet.id))}</span><button class="mini-button" data-edit-wallet="${wallet.id}" aria-label="Ubah ${escapeHtml(wallet.name)}">✎</button><button class="mini-button" data-delete-wallet="${wallet.id}" aria-label="Hapus ${escapeHtml(wallet.name)}">×</button></div></div>`).join("");
-      renderGoal(income - expense); renderTransactions(); renderDonut(month); renderCashflow(); renderNotifications();
-    }
-    function renderNotifications() {
-      const sorted = [...state.transactions].sort((a, b) => b.createdAt - a.createdAt);
-      const unread = sorted.filter((tx) => tx.createdAt > (state.notificationsSeenAt || 0)).length;
-      $("#notificationBadge").hidden = unread === 0;
-      $("#notificationBadge").textContent = unread > 9 ? "9+" : unread;
-      $("#notificationSummary").textContent = unread ? unread + " belum dibaca" : "Semua sudah dibaca";
-      $("#notificationList").innerHTML = sorted.length ? sorted.slice(0, 10).map((tx) => {
-        const isTransfer = tx.type === "transfer";
-        const label = tx.type === "income" ? "Pemasukan baru" : tx.type === "expense" ? "Pengeluaran tercatat" : "Transfer antar dompet";
-        const detail = isTransfer ? `${walletName(tx.from)} → ${walletName(tx.to)}` : `${tx.note || tx.category} • ${walletName(tx.walletId)}`;
-        return `<div class="notification-item"><span class="notification-icon">${tx.type === "income" ? "↗" : tx.type === "expense" ? "↘" : "⇄"}</span><div><div class="notification-title">${label} · ${rupiah(tx.amount)}</div><div class="notification-meta">${escapeHtml(detail)} • ${formatDate(tx.date)}</div></div></div>`;
-      }).join("") : `<div class="notification-empty">Belum ada aktivitas keuangan.</div>`;
+      $("#walletList").innerHTML = state.wallets.map((wallet) => `<div class="wallet-row"><div class="wallet-info">${walletIcon()}<span class="wallet-name">${escapeHtml(wallet.name)}</span></div><div class="wallet-actions"><span class="wallet-balance">${rupiah(walletBalance(wallet.id))}</span><button class="mini-button" data-edit-wallet="${wallet.id}" aria-label="Ubah ${escapeHtml(wallet.name)}">Ubah</button><button class="mini-button" data-delete-wallet="${wallet.id}" aria-label="Hapus ${escapeHtml(wallet.name)}">Hapus</button></div></div>`).join("");
+      renderGoal(income - expense); renderTransactions(); renderDonut(month); renderCashflow();
     }
     function renderGoal(savedThisMonth) {
       const goal = state.goal; const progress = goal.target ? Math.min(100, Math.max(0, savedThisMonth / goal.target * 100)) : 0;
@@ -325,11 +353,13 @@
     }
     function renderTransactions() {
       const type = $("#typeFilter").value, month = $("#monthFilter").value;
+      const monthButton = $("#monthFilterButton");
+      if (monthButton) monthButton.textContent = month ? new Intl.DateTimeFormat("id-ID", { month: "long", year: "numeric" }).format(new Date(month + "-01T00:00:00")) : "Semua bulan";
       const items = state.transactions.filter((tx) => belongsToWallet(tx) && (type === "all" || tx.type === type) && (!month || tx.date.startsWith(month))).sort((a, b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt);
       $("#transactionList").innerHTML = items.length ? items.slice(0, 30).map((tx) => {
         const transfer = tx.type === "transfer"; const title = transfer ? `${walletName(tx.from)} → ${walletName(tx.to)}` : (tx.note || tx.category);
         const meta = transfer ? `Transfer${tx.note ? " • " + tx.note : ""} • ${formatDate(tx.date)}` : `${tx.category} • ${walletName(tx.walletId)} • ${formatDate(tx.date)}`;
-        return `<div class="transaction-row"><div class="transaction-icon">${transfer ? "⇄" : tx.type === "income" ? "↗" : "↘"}</div><div><div class="transaction-title">${escapeHtml(title)}</div><div class="transaction-meta">${escapeHtml(meta)}</div></div><div class="transaction-amount ${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "positive" : "negative"}">${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "+" : "-"}${rupiah(tx.amount)}</div><button class="mini-button" data-delete-tx="${tx.id}" aria-label="Hapus transaksi">×</button></div>`;
+        return `<div class="transaction-row"><div class="transaction-icon">${transactionIcon(tx.type)}</div><div><div class="transaction-title">${escapeHtml(title)}</div><div class="transaction-meta">${escapeHtml(meta)}</div></div><div class="transaction-amount ${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "positive" : "negative"}">${tx.type === "income" || (transfer && tx.to === state.activeWallet) ? "+" : "-"}${rupiah(tx.amount)}</div><button class="mini-button" data-delete-tx="${tx.id}" aria-label="Hapus transaksi">Hapus</button></div>`;
       }).join("") : `<div class="empty">Belum ada transaksi yang cocok dengan filter.</div>`;
     }
     function renderDonut(month) {
@@ -351,23 +381,96 @@
     }
     function openModal(title, content, onSubmit) { $("#modalTitle").textContent = title; $("#modalBody").innerHTML = content; $("#modalBackdrop").classList.add("open"); const form = $("#modalBody").querySelector("form"); if (form) { form.addEventListener("submit", (event) => { event.preventDefault(); onSubmit(new FormData(form)); }); form.querySelector("input, select")?.focus(); } }
     function closeModal() { $("#modalBackdrop").classList.remove("open"); $("#modalBody").innerHTML = ""; }
-    function formWallet(wallet) { openModal(wallet ? "Ubah dompet" : "Tambah dompet", `<form><div class="field"><label for="walletName">Nama dompet</label><input id="walletName" name="name" required maxlength="30" value="${wallet ? escapeHtml(wallet.name) : ""}" placeholder="Contoh: Tabungan"></div><div class="field"><label for="walletEmoji">Emoji</label><input id="walletEmoji" name="emoji" required maxlength="2" value="${wallet ? escapeHtml(wallet.emoji) : "💳"}" placeholder="💳"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${wallet ? "Simpan" : "Tambah dompet"}</button></div></form>`, (data) => { if (wallet) { wallet.name = data.get("name").trim(); wallet.emoji = data.get("emoji").trim(); } else { const created = { id: "wallet-" + Date.now(), name: data.get("name").trim(), emoji: data.get("emoji").trim() }; state.wallets.push(created); state.activeWallet = created.id; } saveState(); closeModal(); render(); showToast("Dompet berhasil disimpan."); }); $("#cancelForm").onclick = closeModal; }
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+    function closePicker() { document.querySelector(".date-popover")?.remove(); }
+    function openPicker(trigger) {
+      closePicker();
+      const kind = trigger.dataset.picker;
+      const hidden = document.getElementById(trigger.dataset.pickerTarget || (kind === "month" ? "monthFilter" : "date"));
+      if (!hidden) return;
+      const initial = hidden.value || (kind === "month" ? monthNow() : dateNow());
+      let cursor = new Date((kind === "month" ? initial + "-01" : initial) + "T00:00:00");
+      const popover = document.createElement("div");
+      popover.className = "date-popover";
+      popover.setAttribute("role", "dialog");
+      popover.setAttribute("aria-label", kind === "month" ? "Pilih bulan" : "Pilih tanggal");
+      document.body.appendChild(popover);
+      const draw = () => {
+        const year = cursor.getFullYear(), month = cursor.getMonth();
+        if (kind === "month") {
+          popover.innerHTML = `<div class="date-popover-header"><button class="date-nav" type="button" data-picker-prev aria-label="Tahun sebelumnya">‹</button><strong>${year}</strong><button class="date-nav" type="button" data-picker-next aria-label="Tahun berikutnya">›</button></div><div class="month-grid">${monthNames.map((name, index) => { const value = year + "-" + String(index + 1).padStart(2, "0"); return `<button type="button" class="${value === hidden.value ? "selected" : ""}" data-picker-value="${value}">${name}</button>`; }).join("")}</div><button type="button" class="date-clear" data-picker-clear>Hapus filter</button>`;
+        } else {
+          const firstDay = new Date(year, month, 1).getDay();
+          const offset = (firstDay + 6) % 7;
+          const days = new Date(year, month + 1, 0).getDate();
+          const cells = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"].map((day) => `<span class="date-weekday">${day}</span>`);
+          for (let i = 0; i < offset; i++) cells.push("<span></span>");
+          for (let day = 1; day <= days; day++) {
+            const value = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            cells.push(`<button type="button" class="${value === hidden.value ? "selected" : ""}" data-picker-value="${value}">${day}</button>`);
+          }
+          popover.innerHTML = `<div class="date-popover-header"><button class="date-nav" type="button" data-picker-prev aria-label="Bulan sebelumnya">‹</button><strong>${new Intl.DateTimeFormat("id-ID", { month: "long", year: "numeric" }).format(cursor)}</strong><button class="date-nav" type="button" data-picker-next aria-label="Bulan berikutnya">›</button></div><div class="date-grid">${cells.join("")}</div>`;
+        }
+        const rect = trigger.getBoundingClientRect();
+        const left = Math.min(Math.max(16, rect.left), window.innerWidth - popover.offsetWidth - 16);
+        popover.style.left = `${left}px`;
+        popover.style.top = `${Math.min(window.innerHeight - popover.offsetHeight - 16, rect.bottom + 8)}px`;
+      };
+      popover.addEventListener("click", (event) => {
+        if (event.target.closest("[data-picker-prev]")) { cursor = new Date(cursor.getFullYear() - (kind === "month" ? 1 : 0), cursor.getMonth() - (kind === "month" ? 0 : 1), 1); draw(); }
+        if (event.target.closest("[data-picker-next]")) { cursor = new Date(cursor.getFullYear() + (kind === "month" ? 1 : 0), cursor.getMonth() + (kind === "month" ? 0 : 1), 1); draw(); }
+        const valueButton = event.target.closest("[data-picker-value]");
+        if (valueButton) { hidden.value = valueButton.dataset.pickerValue; trigger.textContent = kind === "month" ? new Intl.DateTimeFormat("id-ID", { month: "long", year: "numeric" }).format(new Date(hidden.value + "-01T00:00:00")) : formatDate(hidden.value); hidden.dispatchEvent(new Event("change", { bubbles: true })); closePicker(); trigger.focus(); }
+        if (event.target.closest("[data-picker-clear]")) { hidden.value = ""; trigger.textContent = "Semua bulan"; hidden.dispatchEvent(new Event("change", { bubbles: true })); closePicker(); trigger.focus(); }
+      });
+      draw();
+    }
+    function formWallet(wallet) { openModal(wallet ? "Ubah dompet" : "Tambah dompet", `<form><div class="field"><label for="walletName">Nama dompet</label><input id="walletName" name="name" required maxlength="30" value="${wallet ? escapeHtml(wallet.name) : ""}" placeholder="Contoh: Tabungan"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${wallet ? "Simpan" : "Tambah dompet"}</button></div></form>`, (data) => { if (wallet) wallet.name = data.get("name").trim(); else { const created = { id: "wallet-" + Date.now(), name: data.get("name").trim(), emoji: "" }; state.wallets.push(created); state.activeWallet = created.id; } saveState(); closeModal(); render(); showToast("Dompet berhasil disimpan."); }); $("#cancelForm").onclick = closeModal; }
     function formTransaction(type) {
-      const walletOptions = state.wallets.map((wallet) => `<option value="${wallet.id}" ${wallet.id === state.activeWallet ? "selected" : ""}>${escapeHtml(wallet.emoji)} ${escapeHtml(wallet.name)}</option>`).join("");
+      const walletOptions = state.wallets.map((wallet) => `<option value="${wallet.id}" ${wallet.id === state.activeWallet ? "selected" : ""}>${escapeHtml(wallet.name)}</option>`).join("");
       const categoryOptions = categories.map((category) => `<option>${category}</option>`).join("");
       const isTransfer = type === "transfer";
-      const content = isTransfer ? `<form><div class="field"><label for="from">Dari dompet</label><select id="from" name="from">${walletOptions}</select></div><div class="field"><label for="to">Ke dompet</label><select id="to" name="to">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div><div class="field"><label for="date">Tanggal</label><input id="date" name="date" type="date" required value="${dateNow()}"></div><div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="Opsional"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">Transfer</button></div></form>` : `<form><div class="field"><label for="wallet">Dompet</label><select id="wallet" name="walletId">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div><div class="field"><label for="category">Kategori</label><select id="category" name="category">${categoryOptions}</select></div><div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="${type === "income" ? "Contoh: Gaji bulanan" : "Contoh: Makan siang"}"></div><div class="field"><label for="date">Tanggal</label><input id="date" name="date" type="date" required value="${dateNow()}"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${type === "income" ? "Simpan pemasukan" : "Simpan pengeluaran"}</button></div></form>`;
+      const dateField = `<div class="field"><label for="dateButton">Tanggal</label><div class="date-control"><button class="date-trigger" id="dateButton" type="button" data-picker="date" data-picker-target="date">${formatDate(dateNow())}</button><input id="date" name="date" type="hidden" value="${dateNow()}"></div></div>`;
+      const content = isTransfer ? `<form><div class="field"><label for="from">Dari dompet</label><select id="from" name="from">${walletOptions}</select></div><div class="field"><label for="to">Ke dompet</label><select id="to" name="to">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div>${dateField}<div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="Opsional"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">Transfer</button></div></form>` : `<form><div class="field"><label for="wallet">Dompet</label><select id="wallet" name="walletId">${walletOptions}</select></div><div class="field"><label for="amount">Nominal</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="0"></div><div class="field"><label for="category">Kategori</label><select id="category" name="category">${categoryOptions}</select></div><div class="field"><label for="note">Catatan</label><input id="note" name="note" maxlength="80" placeholder="${type === "income" ? "Contoh: Gaji bulanan" : "Contoh: Makan siang"}"></div>${dateField}<div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">${type === "income" ? "Simpan pemasukan" : "Simpan pengeluaran"}</button></div></form>`;
       openModal(type === "income" ? "Tambah pemasukan" : type === "expense" ? "Tambah pengeluaran" : "Transfer antar dompet", content, (data) => { const amount = Number(data.get("amount")); if (!amount || amount < 1) return showToast("Nominal harus lebih dari 0."); if (isTransfer && data.get("from") === data.get("to")) return showToast("Pilih dua dompet yang berbeda."); const tx = { id: "tx-" + Date.now(), type, amount, date: data.get("date"), note: String(data.get("note") || "").trim(), createdAt: Date.now() }; if (isTransfer) { tx.from = data.get("from"); tx.to = data.get("to"); } else { tx.walletId = data.get("walletId"); tx.category = data.get("category") || "Lainnya"; } state.transactions.push(tx); saveState(); closeModal(); render(); showToast(type === "income" ? "Pemasukan berhasil dicatat." : type === "expense" ? "Pengeluaran berhasil dicatat." : "Transfer berhasil dicatat."); }); $("#cancelForm").onclick = closeModal;
     }
     function formGoal() { openModal("Atur target tabungan", `<form><div class="field"><label for="goalName">Nama target</label><input id="goalName" name="name" required maxlength="40" value="${escapeHtml(state.goal.name)}"></div><div class="field"><label for="goalTarget">Nominal target</label><input id="goalTarget" name="target" type="number" min="1" required value="${state.goal.target}"></div><div class="form-actions"><button type="button" class="button secondary" id="cancelForm">Batal</button><button class="button primary">Simpan target</button></div></form>`, (data) => { state.goal = { name: data.get("name").trim(), target: Number(data.get("target")) }; saveState(); closeModal(); render(); showToast("Target tabungan diperbarui."); }); $("#cancelForm").onclick = closeModal; }
-    function showToast(message) { const toast = $("#toast"); toast.textContent = message; toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 2600); }
+    function showToast(message) { const toast = $("#toast"); const notice = $("#activityNotice"); toast.textContent = message; notice.textContent = message; notice.classList.add("show"); toast.classList.add("show"); clearTimeout(showToast.noticeTimer); showToast.noticeTimer = setTimeout(() => notice.classList.remove("show"), 4200); setTimeout(() => toast.classList.remove("show"), 2600); }
     function exportCsv() { const headers = ["Tanggal", "Jenis", "Nominal", "Kategori", "Catatan", "Dompet"]; const rows = state.transactions.map((tx) => [tx.date, tx.type, tx.amount, tx.category || "Transfer", tx.note || "", tx.type === "transfer" ? `${walletName(tx.from)} ke ${walletName(tx.to)}` : walletName(tx.walletId)]); const csv = [headers, ...rows].map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\n"); const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" })); link.download = "money-managemen-" + dateNow() + ".csv"; link.click(); URL.revokeObjectURL(link.href); }
+    function importJson(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const imported = JSON.parse(String(reader.result));
+          const rows = Array.isArray(imported) ? imported : imported.transactions;
+          if (!Array.isArray(rows)) throw new Error("Format JSON tidak valid.");
+          const knownCategories = new Set(categories);
+          const incoming = rows.map((row) => {
+            const amount = Number(row.amount);
+            const date = String(row.date || dateNow());
+            if (!amount || amount < 1 || !/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("Data transaksi tidak lengkap.");
+            return { id: "tx-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8), type: row.type === "income" ? "income" : "expense", amount, date, category: knownCategories.has(row.category) ? row.category : "Lainnya", note: String(row.note || "Dari bot Telegram").trim(), walletId: state.wallets.find((wallet) => wallet.name === row.walletName)?.id || state.activeWallet, createdAt: Date.now() };
+          });
+          state.transactions.push(...incoming); saveState(); render(); showToast(`${incoming.length} transaksi dari struk berhasil diimpor.`);
+        } catch (error) { showToast(error.message || "File JSON tidak dapat dibaca."); }
+      };
+      reader.readAsText(file);
+    }
     document.addEventListener("click", (event) => { const target = event.target.closest("[data-action]"); if (target) { const action = target.dataset.action; if (action === "income" || action === "expense" || action === "transfer") formTransaction(action); if (action === "wallet") formWallet(); if (action === "goal") formGoal(); } const walletOption = event.target.closest("[data-select-wallet]"); if (walletOption) { state.activeWallet = walletOption.dataset.selectWallet; $("#walletMenu").hidden = true; $("#walletPicker").setAttribute("aria-expanded", "false"); saveState(); render(); } const edit = event.target.closest("[data-edit-wallet]"); if (edit) formWallet(state.wallets.find((wallet) => wallet.id === edit.dataset.editWallet)); const removeWallet = event.target.closest("[data-delete-wallet]"); if (removeWallet) { if (state.wallets.length < 2) return showToast("Minimal harus ada satu dompet."); if (confirm("Hapus dompet ini? Transaksi lama tetap tersimpan.")) { state.wallets = state.wallets.filter((wallet) => wallet.id !== removeWallet.dataset.deleteWallet); if (state.activeWallet === removeWallet.dataset.deleteWallet) state.activeWallet = state.wallets[0].id; saveState(); render(); } } const removeTx = event.target.closest("[data-delete-tx]"); if (removeTx && confirm("Hapus transaksi ini?")) { state.transactions = state.transactions.filter((tx) => tx.id !== removeTx.dataset.deleteTx); saveState(); render(); } });
     $("#walletPicker").addEventListener("click", () => { const menu = $("#walletMenu"); menu.hidden = !menu.hidden; $("#walletPicker").setAttribute("aria-expanded", String(!menu.hidden)); });
-    $("#notificationToggle").addEventListener("click", () => { const panel = $("#notificationPanel"); panel.hidden = !panel.hidden; $("#notificationToggle").setAttribute("aria-expanded", String(!panel.hidden)); if (!panel.hidden) { state.notificationsSeenAt = Date.now(); saveState(); renderNotifications(); } });
-    document.addEventListener("click", (event) => { if (!event.target.closest(".wallet-switcher")) { $("#walletMenu").hidden = true; $("#walletPicker").setAttribute("aria-expanded", "false"); } if (!event.target.closest(".notification-wrap")) { $("#notificationPanel").hidden = true; $("#notificationToggle").setAttribute("aria-expanded", "false"); } });
-    $("#typeFilter").addEventListener("change", renderTransactions); $("#monthFilter").addEventListener("change", renderTransactions); $("#exportCsv").addEventListener("click", exportCsv);
+    function setView(view) { $("#contentGrid").dataset.view = view; $(".app-shell").dataset.view = view; updateBottomNav(view); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    document.querySelectorAll(".service-button[data-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.view)));
+    document.querySelectorAll(".bottom-nav [data-bottom-view]").forEach((button) => button.addEventListener("click", () => setView(button.dataset.bottomView)));
+    function updateBottomNav(view) { document.querySelectorAll(".bottom-nav button").forEach((button) => button.classList.toggle("active", button.dataset.bottomView === view)); }
+    document.addEventListener("click", (event) => {
+      const pickerTrigger = event.target.closest("[data-picker]");
+      if (pickerTrigger) return openPicker(pickerTrigger);
+      if (!event.target.closest(".date-popover")) closePicker();
+    });
+    document.addEventListener("click", (event) => { if (!event.target.closest(".wallet-switcher")) { $("#walletMenu").hidden = true; $("#walletPicker").setAttribute("aria-expanded", "false"); } });
+    $("#typeFilter").addEventListener("change", renderTransactions); $("#monthFilter").addEventListener("change", renderTransactions); $("#exportCsv").addEventListener("click", exportCsv); $("#importJsonButton").addEventListener("click", () => $("#importJson").click()); $("#importJson").addEventListener("change", (event) => { if (event.target.files[0]) importJson(event.target.files[0]); event.target.value = ""; });
     $("#closeModal").addEventListener("click", closeModal); $("#modalBackdrop").addEventListener("click", (event) => { if (event.target === $("#modalBackdrop")) closeModal(); });
+    setView("home");
     render();
   </script>
 </body>
